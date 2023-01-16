@@ -3,11 +3,11 @@ package br.com.attornatusbackend.service;
 import br.com.attornatusbackend.model.Address;
 import br.com.attornatusbackend.model.Person;
 import br.com.attornatusbackend.repository.PersonRepository;
+import br.com.attornatusbackend.service.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.rmi.server.UID;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +23,8 @@ public class PersonService {
 
     public Person findById(UUID id) {
         return personRepository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        "Pessoa não encontrado! ID: " + id + ", Tipo: " + Person.class.getName()));
     }
 
     public Person create(Person person) {

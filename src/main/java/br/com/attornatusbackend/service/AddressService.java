@@ -3,8 +3,8 @@ package br.com.attornatusbackend.service;
 import br.com.attornatusbackend.model.Address;
 import br.com.attornatusbackend.model.Person;
 import br.com.attornatusbackend.repository.AddressRepository;
+import br.com.attornatusbackend.service.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,14 +21,12 @@ public class AddressService {
 
     private Address findById(UUID id) {
         return addressRepository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        "Endereço não encontrado! ID: " + id + ", Tipo: " + Address.class.getName()));
     }
 
     public Address createAddress(UUID personId, Address address) {
         Person person = personService.findById(personId);
-        if (Objects.isNull(person)) {
-            throw new ObjectNotFoundException(personId, "Pessoa não encontrada!");
-        }
 
         address.setId(null);
         address.setPerson(person);
@@ -36,20 +34,13 @@ public class AddressService {
     }
 
     public List<Address> findByPersonId(UUID personId) {
+        personService.findById(personId); // validar se pessoa existe
         return addressRepository.findByPersonId(personId);
     }
 
     public void setMainAddress(UUID addressId, UUID personId) {
         Address address = findById(addressId);
-        if (Objects.isNull(address)) {
-            throw new ObjectNotFoundException(addressId, "Endereço não encontrado!");
-        }
-
         Person person = personService.findById(personId);
-        if (Objects.isNull(person)) {
-            throw new ObjectNotFoundException(personId, "Pessoa não encontrada!");
-        }
-
         personService.setMainAddress(person, address);
     }
 
