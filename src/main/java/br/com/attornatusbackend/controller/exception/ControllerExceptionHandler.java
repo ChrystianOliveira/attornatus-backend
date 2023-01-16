@@ -18,6 +18,7 @@ public class ControllerExceptionHandler {
         StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request){
         ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de validação");
