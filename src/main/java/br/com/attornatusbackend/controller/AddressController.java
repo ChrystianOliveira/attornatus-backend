@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class AddressController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/person/{personId}")
-    public AddressDTO createAddress(@PathVariable UUID personId, @RequestBody AddressDTO addressDTO){
+    public AddressDTO createAddress(@PathVariable UUID personId, @Valid @RequestBody AddressDTO addressDTO){
         Address savedAddress = addressService.createAddress(personId, AddressMapper.INST.toModel(addressDTO));
         return AddressMapper.INST.toDto(savedAddress);
     }

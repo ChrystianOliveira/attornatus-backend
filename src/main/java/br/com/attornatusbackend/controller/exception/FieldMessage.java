@@ -1,18 +1,20 @@
 package br.com.attornatusbackend.controller.exception;
 
-import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class StandardError implements Serializable {
+public class FieldMessage implements Serializable {
 
-    private Integer status;
+    private String fieldName;
 
-    private String msg;
-    
+    private String message;
+
 }

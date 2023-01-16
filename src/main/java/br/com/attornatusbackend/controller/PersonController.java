@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,13 +34,13 @@ public class PersonController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PersonDTO create(@RequestBody PersonDTO personDTO) {
+    public PersonDTO create(@Valid @RequestBody PersonDTO personDTO) {
         Person savedPerson = personService.create(PersonMapper.INST.toModel(personDTO));
         return PersonMapper.INST.toDto(savedPerson);
     }
 
     @PutMapping("/{id}")
-    public PersonDTO update(@RequestBody PersonDTO personDTO, @PathVariable UUID id) {
+    public PersonDTO update(@Valid @RequestBody PersonDTO personDTO, @PathVariable UUID id) {
         Person updatedPerson = personService.update(PersonMapper.INST.toModel(personDTO), id);
         return PersonMapper.INST.toDto(updatedPerson);
     }
