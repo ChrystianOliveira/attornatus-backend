@@ -5,10 +5,10 @@ import br.com.attornatusbackend.model.Person;
 import br.com.attornatusbackend.repository.AddressRepository;
 import br.com.attornatusbackend.service.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -19,15 +19,14 @@ public class AddressService {
 
     private final PersonService personService;
 
-    private Address findById(UUID id) {
+    public Address findById(UUID id) {
         return addressRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException(
                         "Endereço não encontrado! ID: " + id + ", Tipo: " + Address.class.getName()));
     }
 
-    public Address createAddress(UUID personId, Address address) {
+    public Address createAddress(UUID personId, @NotNull Address address) {
         Person person = personService.findById(personId);
-
         address.setId(null);
         address.setPerson(person);
         return addressRepository.save(address);
