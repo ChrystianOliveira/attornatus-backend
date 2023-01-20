@@ -15,25 +15,23 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-class AddressServiceTest {
+class PersonServiceTest {
 
     @InjectMocks
-    private AddressService addressService;
+    private PersonService personService;
 
     @Mock
-    private AddressRepository addressRepository;
+    private PersonRepository personRepository;
 
     private UUID existingPersonId;
     private UUID existingAddressId;
-    private UUID nonExistingAddressId;
+    private UUID nonExistingPersonId;
     private Address address;
     private Person person;
 
@@ -41,12 +39,12 @@ class AddressServiceTest {
     void setUp() {
         existingPersonId = UUID.randomUUID();
         existingAddressId = UUID.randomUUID();
-        nonExistingAddressId = UUID.randomUUID();
+        nonExistingPersonId = UUID.randomUUID();
         person = new Person(existingPersonId, "chrystian", LocalDate.of(1997, 11, 12), null, null);
         address = new Address(existingAddressId, "rua c", "57084028", "54", "Maceio", person);
 
-        Mockito.when(addressRepository.findById(existingAddressId)).thenReturn(Optional.of(address));
-        Mockito.doThrow(ObjectNotFoundException.class).when(addressRepository).findById(nonExistingAddressId);
+        Mockito.when(personRepository.findById(existingPersonId)).thenReturn(Optional.of(person));
+        Mockito.doThrow(ObjectNotFoundException.class).when(personRepository).findById(nonExistingPersonId);
 
     }
 
@@ -54,7 +52,7 @@ class AddressServiceTest {
     public void findShouldFindByIdWhenIdExists() {
 
         Assertions.assertDoesNotThrow(() -> {
-            addressService.findById(existingAddressId);
+            personService.findById(existingAddressId);
         });
 
     }
@@ -63,7 +61,7 @@ class AddressServiceTest {
     public void findShouldFindByIdWhenIdNotExists() {
 
         Assertions.assertThrows(ObjectNotFoundException.class, () -> {
-            addressService.findById(nonExistingAddressId);
+            personService.findById(nonExistingPersonId);
         });
 
     }
