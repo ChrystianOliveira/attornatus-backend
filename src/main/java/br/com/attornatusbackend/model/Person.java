@@ -42,4 +42,5 @@ public class Person {
     @JoinColumn(name = "id_address_main")
     private Address mainAddress;
 
+    
 }
